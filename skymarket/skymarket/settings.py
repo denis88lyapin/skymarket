@@ -42,10 +42,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "rest_framework",
+    'drf_yasg',
+
     "users",
     "ads",
     "redoc",
+
 ]
 
 
@@ -143,7 +147,13 @@ MEDIA_URL = "/django_media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "django_media")
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    os.path.join('CORS_ALLOWED_ORIGINS'),
+]
+CSRF_TRUSTED_ORIGINS = [
+    os.path.join('CSRF_TRUSTED_ORIGINS'),
+]
+CORS_ALLOW_ALL_ORIGINS = os.path.join('CORS_ALLOW_ALL_ORIGINS') == 1
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
