@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
 
+    # 'djoser'
+
     "users",
     "ads",
     "redoc",
@@ -149,10 +151,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "django_media")
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
-    os.path.join('CORS_ALLOWED_ORIGINS'),
+    os.environ.get('FRONTEND_ALLOWED_ORIGINS'),
+    os.environ.get('BACKEND_TRUSTED_ORIGINS'),
 ]
+
 CSRF_TRUSTED_ORIGINS = [
-    os.path.join('CSRF_TRUSTED_ORIGINS'),
+    os.environ.get('BACKEND_TRUSTED_ORIGINS'),
 ]
 CORS_ALLOW_ALL_ORIGINS = os.path.join('CORS_ALLOW_ALL_ORIGINS') == 1
 
