@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
-
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -90,6 +90,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'AUTH_HEADER_TYPES': ('JWT',),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
@@ -186,3 +187,31 @@ EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
+
+LOG_LEVEL = os.environ.get('LOG_LEVEL')
+if LOG_LEVEL:
+    LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+    if not os.path.exists(LOGGING_DIR):
+        os.makedirs(LOGGING_DIR)
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': LOG_LEVEL,
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGGING_DIR, 'django.log'),
+            },
+            'console': {
+                'level': LOG_LEVEL,
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['file', 'console'],
+                'level': LOG_LEVEL,
+                'propagate': True,
+            },
+        },
+        }
