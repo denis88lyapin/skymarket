@@ -20,7 +20,7 @@ class User(AbstractUser):
 
     first_name = models.CharField(max_length=60, verbose_name=_('First Name'))
     last_name = models.CharField(max_length=60, verbose_name=_('Last Name'))
-    phone = PhoneNumberField(max_length=30, verbose_name=_('Phone Number'), **NULLABLE)
+    phone = models.CharField(max_length=30, verbose_name=_('Phone Number'), **NULLABLE)
     email = models.EmailField(unique=True, verbose_name=_('Email'))
     image = models.ImageField(upload_to='users/images', verbose_name=_('Avatar'), **NULLABLE)
     role = models.CharField(
@@ -31,7 +31,7 @@ class User(AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', 'role']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', 'id', 'image']
 
     objects = UserManager()
 

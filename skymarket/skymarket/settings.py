@@ -32,8 +32,6 @@ DEBUG = os.environ.get('DEBUG') == '1'
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
 # Application definition
-
-# TODO здесь тоже нужно подключить Swagger и corsheaders
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -46,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'django_filters',
 
     'djoser',
 
@@ -92,7 +91,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 4
 }
 
 SIMPLE_JWT = {
@@ -102,11 +106,12 @@ SIMPLE_JWT = {
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'users.serializers.UserRegistrationSerializer'
+        'user_create': 'users.serializers.UserRegistrationSerializer',
+        'user': 'users.serializers.CurrentUserSerializer',
     },
     'LOGIN_FIELD': 'email',
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/users/reset_password_confirm//{uid}/{token}',
+    # 'USERNAME_RESET_CONFIRM_URL': 'api/users/reset_username_confirm/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_RETYPE': True
 }
 
@@ -193,7 +198,6 @@ EMAIL_SERVER = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
-
 LOG_LEVEL = os.environ.get('LOG_LEVEL')
 if LOG_LEVEL:
     LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
@@ -220,4 +224,4 @@ if LOG_LEVEL:
                 'propagate': True,
             },
         },
-        }
+    }
